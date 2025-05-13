@@ -2,7 +2,7 @@
 
 A simple yet powerful web utility designed to convert your SVG (Scalable Vector Graphics) files into a format that's optimized for seamless integration and styling within **Webflow**. This tool automates the process of making your SVGs responsive and color-adaptable using `currentColor`.
 
-**Try it out: [Link to your deployed utility site HERE]**
+**Try it out: [https://theeriklens.github.io/svg-webflow-converter/]**
 
 ## Why This Tool?
 
@@ -35,7 +35,7 @@ This converter addresses these needs by:
 
 ## How to Use the Deployed Utility
 
-1.  **Visit the live site:** [Link to your deployed utility site HERE]
+1.  **Visit the live site:** [https://theeriklens.github.io/svg-webflow-converter/]
 2.  **Provide your SVG:**
     *   Click "Choose File" to upload your `.svg` file.
     *   OR, paste your existing SVG code directly into the "Or paste SVG code here:" textarea.
@@ -56,7 +56,7 @@ This converter addresses these needs by:
 *   Vanilla JavaScript (ES6+)
     *   DOMParser API for parsing SVG strings.
     *   XMLSerializer API for serializing SVG DOM back to string.
-*   Hosted on [GitHub Pages / Netlify / Vercel - *Specify your chosen hosting provider here*]
+*   Hosted on [GitHub Pages]
 
 ## For Local Development / Viewing the Code
 
@@ -80,9 +80,9 @@ This tool was created as a practical utility to help Webflow users and to demons
 
 If you find this tool useful, have suggestions, or are interested in discussing digital strategy and development, feel free to connect!
 
-*   **My Portfolio/Website:** [Link to your personal/consultancy website - OPTIONAL]
+*   **My Portfolio/Website:** [Link to]
 *   **LinkedIn:** [https://www.linkedin.com/in/erickvallart/]
-*   **GitHub:** [Link to your GitHub profile: e.g., https://github.com/[YourGitHubUsername]]
+*   **GitHub:** [https://github.com/TheErikLens]
 
 ## Contributing
 
