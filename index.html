@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to Webflow Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SVG to Webflow-Friendly Converter</h1>
+        <p>Converts SVG colors to "currentColor" and makes it responsive.</p>
+
+        <div class="io-section">
+            <label for="svgFile">Upload your SVG file:</label>
+            <input type="file" id="svgFile" accept=".svg">
+        </div>
+
+        <div class="io-section">
+            <label for="svgInput">Or paste SVG code here:</label>
+            <textarea id="svgInput" rows="10" placeholder="<svg>...</svg>"></textarea>
+        </div>
+
+        <button id="convertButton">Convert SVG</button>
+
+        <div class="io-section output-section">
+            <h2>Converted SVG:</h2>
+            <textarea id="svgOutput" rows="10" readonly placeholder="Converted SVG will appear here..."></textarea>
+            <button id="copyButton" style="display:none;">Copy to Clipboard</button>
+            <a id="downloadLink" style="display:none;">Download Converted SVG</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
