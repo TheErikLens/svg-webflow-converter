@@ -71,6 +71,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
+                        // First, handle the root SVG element itself for fill, stroke, and style
+            if (svgElement.hasAttribute('fill') && svgElement.getAttribute('fill') !== 'none' && svgElement.getAttribute('fill') !== 'transparent') {
+                svgElement.setAttribute('fill', 'currentColor');
+            }
+            if (svgElement.hasAttribute('stroke') && svgElement.getAttribute('stroke') !== 'none' && svgElement.getAttribute('stroke') !== 'transparent') {
+                svgElement.setAttribute('stroke', 'currentColor');
+            }
+            // Also handle inline styles on the root element if they contain fill/stroke
+            if (svgElement.hasAttribute('style')) {
+                let style = svgElement.getAttribute('style');
+                style = style.replace(/fill:\s*[^;!\s]+(\s*!important)?/g, 'fill:currentColor$1');
+                style = style.replace(/stroke:\s*[^;!\s]+(\s*!important)?/g, 'stroke:currentColor$1');
+                svgElement.setAttribute('style', style);
+            }
+
             const elementsToColor = svgElement.querySelectorAll('*');
             elementsToColor.forEach(el => {
                 if (el.hasAttribute('fill') && el.getAttribute('fill') !== 'none' && el.getAttribute('fill') !== 'transparent') {
