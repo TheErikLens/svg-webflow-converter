@@ -1,82 +1,218 @@
+:root {
+    --background-color: #1a1a1a; /* Dark background */
+    --surface-color: #2c2c2c;   /* Slightly lighter for panels */
+    --text-color: #e0e0e0;
+    --text-muted-color: #a0a0a0;
+    --primary-accent: #a1ff75;  /* Erik Lens brand color */
+    --primary-accent-darker: #82cc5e; /* For hover states */
+    --border-color: #444444;
+    --input-bg-color: #333333;
+    --input-border-color: #555555;
+    --button-text-color: #1a1a1a; /* Dark text for light accent button */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --error-color: #ff6b6b;
+}
+
 body {
-    font-family: sans-serif;
-    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: var(--background-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to top */
+    align-items: flex-start;
     min-height: 100vh;
 }
 
 .container {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background: var(--surface-color);
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px var(--shadow-color);
     width: 100%;
-    max-width: 700px;
-}
-
-h1 {
-    text-align: center;
-    color: #007bff; /* A nice blue */
-}
-
-.io-section {
+    max-width: 800px; /* Increased max-width for more space */
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
-.io-section label {
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+h1 {
+    color: var(--primary-accent);
+    font-size: 2.2em;
+    margin-bottom: 0.2em;
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: var(--text-muted-color);
+}
+
+h2 {
+    color: var(--primary-accent);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.io-panel {
+    background-color: var(--background-color); /* Darker than container surface */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.input-group, .output-group, .control-group {
+    margin-bottom: 20px;
+}
+
+label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-muted-color);
+    font-size: 0.95em;
 }
 
 input[type="file"],
+input[type="number"],
 textarea {
-    width: calc(100% - 22px); /* Account for padding and border */
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    width: calc(100% - 22px);
+    padding: 12px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 6px;
     box-sizing: border-box;
-    font-family: monospace; /* Good for code */
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    font-family: 'Fira Code', 'Consolas', monospace; /* Good for code */
+    font-size: 0.9em;
+}
+input[type="file"] {
+    padding: 8px; /* File input often needs different padding */
+}
+
+input[type="number"] {
+    width: 80px; /* Smaller width for number inputs */
+    margin-right: 5px;
+}
+
+input[type="color"] {
+    width: 50px;
+    height: 35px;
+    padding: 2px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 6px;
+    background-color: var(--input-bg-color);
+    vertical-align: middle;
 }
 
 textarea {
     resize: vertical;
+    min-height: 120px;
 }
 
 button, a#downloadLink {
-    display: block;
-    width: auto; /* Fit content */
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
+    display: inline-block; /* For multiple buttons */
+    padding: 12px 20px;
+    background-color: var(--primary-accent);
+    color: var(--button-text-color);
+    font-weight: bold;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     text-align: center;
-    font-size: 16px;
+    font-size: 1em;
     margin-top: 10px;
-    text-decoration: none; /* For the <a> tag */
+    text-decoration: none;
+    transition: background-color 0.2s ease;
 }
 
 button:hover, a#downloadLink:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-accent-darker);
 }
 
-#copyButton {
-    background-color: #28a745; /* Green */
-    margin-right: 10px; /* Spacing if download is also visible */
-}
-#copyButton:hover {
-    background-color: #1e7e34;
+#convertButton.button-primary {
+    display: block; /* Make main convert button full width */
+    width: 100%;
+    font-size: 1.1em;
+    margin-top: 0; /* Remove top margin if it's the last element in its group */
 }
 
-.output-section button, .output-section a {
-    display: inline-block; /* Allow side-by-side */
-    margin-right: 10px;
+.output-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px; /* Spacing between buttons */
+}
+
+.output-actions button, .output-actions a {
+    flex-grow: 1; /* Make buttons share space */
+}
+
+/* Preview Panel */
+.preview-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Spacing between control groups */
+    margin-bottom: 20px;
+    align-items: flex-end; /* Align items nicely */
+}
+
+.preview-controls .control-group {
+    margin-bottom: 0; /* Remove bottom margin as gap handles it */
+}
+
+#svgPreviewBox {
+    width: 200px; /* Initial size, will be dynamic */
+    height: 200px; /* Initial size, will be dynamic */
+    border: 2px dashed var(--primary-accent);
+    background-color: var(--input-bg-color); /* Default background */
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 0 auto; /* Center the preview box */
+    overflow: hidden; /* Prevent SVG overflow if not scaling correctly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    color: var(--primary-accent); /* Default parent color for SVG */
+}
+
+#svgPreviewBox svg {
+    width: 100%;
+    height: 100%;
+    display: block; /* Remove extra space below inline SVGs */
+}
+
+.preview-placeholder {
+    font-style: italic;
+    color: var(--text-muted-color);
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+}
+
+footer a {
+    color: var(--primary-accent);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
