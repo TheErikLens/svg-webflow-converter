@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // IO Elements
     const svgFileInput = document.getElementById('svgFile');
     const svgTextInput = document.getElementById('svgInput');
     const convertButton = document.getElementById('convertButton');
@@ -6,15 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyButton = document.getElementById('copyButton');
     const downloadLink = document.getElementById('downloadLink');
 
+    // Preview Elements
+    const svgPreviewBox = document.getElementById('svgPreviewBox');
+    const previewWidthInput = document.getElementById('previewWidth');
+    const previewHeightInput = document.getElementById('previewHeight');
+    const previewBgColorInput = document.getElementById('previewBgColor');
+    const previewSvgColorInput = document.getElementById('previewSvgColor'); // For parent color
+    const previewPlaceholder = document.querySelector('.preview-placeholder');
+
     let originalFileName = 'converted.svg';
+    let currentConvertedSvgString = ''; // Store the latest converted SVG
+
+    // --- Event Listeners ---
 
     svgFileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
-            originalFileName = file.name.replace(/\.svg$/i, '') + '_webflow.svg'; // for download
+            originalFileName = file.name.replace(/\.svg$/i, '') + '_webflow.svg';
             const reader = new FileReader();
             reader.onload = (e) => {
-                svgTextInput.value = e.target.result; // Populate textarea for visibility/editing
+                svgTextInput.value = e.target.result;
             };
             reader.readAsText(file);
         }
@@ -28,66 +40,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // 1. Parse the SVG string into a DOM object
             const parser = new DOMParser();
             const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
             const svgElement = svgDoc.documentElement;
 
-            // Check if parsing failed (documentElement might be a parseerror element)
             if (svgElement.nodeName === 'parsererror' || !svgElement || svgElement.tagName.toLowerCase() !== 'svg') {
                 alert('Invalid SVG code. Please check your input.');
                 svgOutputTextarea.value = "Error: Could not parse SVG.";
+                currentConvertedSvgString = '';
+                updatePreview(); // Clear preview on error
                 return;
             }
 
-            // 2. Make it responsive: Remove width and height, ensure viewBox
             svgElement.removeAttribute('width');
             svgElement.removeAttribute('height');
             if (!svgElement.getAttribute('viewBox')) {
-                // Attempt to infer viewBox if width and height were present
-                const originalWidth = svgString.match(/width="([^"]+)"/);
-                const originalHeight = svgString.match(/height="([^"]+)"/);
-                if (originalWidth && originalHeight) {
-                    svgElement.setAttribute('viewBox', `0 0 ${parseFloat(originalWidth[1])} ${parseFloat(originalHeight[1])}`);
+                const originalWidthMatch = svgString.match(/width="([^"]+)"/);
+                const originalHeightMatch = svgString.match(/height="([^"]+)"/);
+                if (originalWidthMatch && originalHeightMatch) {
+                    const w = parseFloat(originalWidthMatch[1]);
+                    const h = parseFloat(originalHeightMatch[1]);
+                    if (!isNaN(w) && !isNaN(h) && w > 0 && h > 0) {
+                         svgElement.setAttribute('viewBox', `0 0 ${w} ${h}`);
+                    } else {
+                        console.warn("Could not infer viewBox from invalid width/height attributes.");
+                    }
                 } else {
-                    // If no viewBox and no width/height to infer from, it might not scale predictably.
-                    // For now, we'll proceed, but a warning could be added.
-                    console.warn("SVG has no viewBox and no width/height attributes to infer one. Responsiveness might be affected.");
+                    console.warn("SVG has no viewBox and no width/height attributes to infer one.");
                 }
             }
-            // Ensure it scales to fill container by default, Webflow specific if needed
-            svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet'); // Optional, but good default
+            svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
-            // 3. Change colors to "currentColor"
-            // Select all elements within the SVG that might have fill or stroke
             const elementsToColor = svgElement.querySelectorAll('*');
             elementsToColor.forEach(el => {
-                // Change fill
-                if (el.hasAttribute('fill') && el.getAttribute('fill') !== 'none') {
+                if (el.hasAttribute('fill') && el.getAttribute('fill') !== 'none' && el.getAttribute('fill') !== 'transparent') {
                     el.setAttribute('fill', 'currentColor');
                 }
-                // Change stroke
-                if (el.hasAttribute('stroke') && el.getAttribute('stroke') !== 'none') {
+                if (el.hasAttribute('stroke') && el.getAttribute('stroke') !== 'none' && el.getAttribute('stroke') !== 'transparent') {
                     el.setAttribute('stroke', 'currentColor');
                 }
-                // Handle inline styles (more complex, but good to have)
                 if (el.hasAttribute('style')) {
                     let style = el.getAttribute('style');
-                    style = style.replace(/fill:\s*[^;!\s]+(!important)?/g, 'fill:currentColor$1');
-                    style = style.replace(/stroke:\s*[^;!\s]+(!important)?/g, 'stroke:currentColor$1');
+                    style = style.replace(/fill:\s*[^;!\s]+(\s*!important)?/g, 'fill:currentColor$1');
+                    style = style.replace(/stroke:\s*[^;!\s]+(\s*!important)?/g, 'stroke:currentColor$1');
                     el.setAttribute('style', style);
                 }
             });
 
-            // 4. Serialize the modified SVG back to a string
             const serializer = new XMLSerializer();
-            const modifiedSvgString = serializer.serializeToString(svgElement);
+            currentConvertedSvgString = serializer.serializeToString(svgElement); // Store for preview
 
-            svgOutputTextarea.value = modifiedSvgString;
+            svgOutputTextarea.value = currentConvertedSvgString;
             copyButton.style.display = 'inline-block';
             downloadLink.style.display = 'inline-block';
-            downloadLink.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(modifiedSvgString);
+            downloadLink.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(currentConvertedSvgString);
             downloadLink.download = originalFileName;
+
+            updatePreview(); // Update preview with the new SVG
 
         } catch (error) {
             console.error("Error during SVG conversion:", error);
@@ -95,18 +104,62 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`An error occurred: ${error.message}`);
             copyButton.style.display = 'none';
             downloadLink.style.display = 'none';
+            currentConvertedSvgString = '';
+            updatePreview(); // Clear preview on error
         }
     });
 
     copyButton.addEventListener('click', () => {
+        if (!svgOutputTextarea.value) return;
         svgOutputTextarea.select();
-        svgOutputTextarea.setSelectionRange(0, 99999); // For mobile devices
+        svgOutputTextarea.setSelectionRange(0, 99999);
         try {
             document.execCommand('copy');
-            alert('Copied to clipboard!');
+            // Maybe a subtle visual feedback instead of alert
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => { copyButton.textContent = 'Copy Code'; }, 1500);
         } catch (err) {
             alert('Failed to copy. Please copy manually.');
         }
-        window.getSelection().removeAllRanges(); // Deselect
+        window.getSelection().removeAllRanges();
     });
+
+    // --- Preview Logic ---
+    function updatePreview() {
+        if (currentConvertedSvgString) {
+            svgPreviewBox.innerHTML = currentConvertedSvgString; // Inject the SVG string
+            if (previewPlaceholder) previewPlaceholder.style.display = 'none';
+        } else {
+            svgPreviewBox.innerHTML = ''; // Clear previous SVG
+            if (previewPlaceholder) {
+                previewPlaceholder.textContent = 'Preview will appear here after conversion.';
+                previewPlaceholder.style.display = 'block';
+            }
+        }
+        // Apply current control values
+        applyPreviewStyles();
+    }
+
+    function applyPreviewStyles() {
+        const width = previewWidthInput.value;
+        const height = previewHeightInput.value;
+        const bgColor = previewBgColorInput.value;
+        const svgColor = previewSvgColorInput.value; // This sets the 'color' property of the preview box
+
+        svgPreviewBox.style.width = `${width}px`;
+        svgPreviewBox.style.height = `${height}px`;
+        svgPreviewBox.style.backgroundColor = bgColor;
+        svgPreviewBox.style.color = svgColor; // This will be inherited by 'currentColor' in the SVG
+    }
+
+    // Event listeners for preview controls
+    previewWidthInput.addEventListener('input', applyPreviewStyles);
+    previewHeightInput.addEventListener('input', applyPreviewStyles);
+    previewBgColorInput.addEventListener('input', applyPreviewStyles);
+    previewSvgColorInput.addEventListener('input', applyPreviewStyles);
+
+    // Initial setup for preview
+    applyPreviewStyles(); // Apply default control values on load
+    updatePreview(); // Ensure placeholder is shown initially
+
 });
