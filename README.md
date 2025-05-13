@@ -63,13 +63,7 @@ This converter addresses these needs by:
 If you'd like to run this locally or inspect the code:
 
 1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/[YourGitHubUsername]/[YourRepositoryName].git
-    ```
 2.  **Navigate to the project directory:**
-    ```bash
-    cd [YourRepositoryName]
-    ```
 3.  **Open `index.html` in your web browser.**
 
 No build process is required for this simple client-side application.
