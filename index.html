@@ -3,32 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG to Webflow Converter</title>
+    <title>SVG to Webflow Converter | Erik Lens</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>SVG to Webflow-Friendly Converter</h1>
-        <p>Converts SVG colors to "currentColor" and makes it responsive.</p>
+        <header>
+            <h1>SVG to Webflow-Friendly Converter</h1>
+            <p class="subtitle">Modern, Responsive, and `currentColor` Ready SVGs</p>
+        </header>
 
-        <div class="io-section">
-            <label for="svgFile">Upload your SVG file:</label>
-            <input type="file" id="svgFile" accept=".svg">
-        </div>
+        <main>
+            <section class="io-panel input-panel">
+                <h2>1. Input Your SVG</h2>
+                <div class="input-group">
+                    <label for="svgFile">Upload SVG File:</label>
+                    <input type="file" id="svgFile" accept=".svg">
+                </div>
+                <div class="input-group">
+                    <label for="svgInput">Or Paste SVG Code:</label>
+                    <textarea id="svgInput" rows="10" placeholder="<svg>...</svg>"></textarea>
+                </div>
+                <button id="convertButton" class="button-primary">Convert SVG</button>
+            </section>
 
-        <div class="io-section">
-            <label for="svgInput">Or paste SVG code here:</label>
-            <textarea id="svgInput" rows="10" placeholder="<svg>...</svg>"></textarea>
-        </div>
+            <section class="io-panel output-panel">
+                <h2>2. Converted SVG</h2>
+                <div class="output-group">
+                    <label for="svgOutput">Converted Code:</label>
+                    <textarea id="svgOutput" rows="10" readonly placeholder="Converted SVG will appear here..."></textarea>
+                    <div class="output-actions">
+                        <button id="copyButton" style="display:none;">Copy Code</button>
+                        <a id="downloadLink" style="display:none;">Download SVG</a>
+                    </div>
+                </div>
+            </section>
 
-        <button id="convertButton">Convert SVG</button>
+            <section class="io-panel preview-panel">
+                <h2>3. Live Preview & Responsiveness Test</h2>
+                <div class="preview-controls">
+                    <div class="control-group">
+                        <label for="previewWidth">Preview Width:</label>
+                        <input type="number" id="previewWidth" value="200" min="10"> px
+                    </div>
+                    <div class="control-group">
+                        <label for="previewHeight">Preview Height:</label>
+                        <input type="number" id="previewHeight" value="200" min="10"> px
+                    </div>
+                    <div class="control-group">
+                        <label for="previewBgColor">BG Color:</label>
+                        <input type="color" id="previewBgColor" value="#333333">
+                    </div>
+                     <div class="control-group">
+                        <label for="previewSvgColor">SVG Color (via parent):</label>
+                        <input type="color" id="previewSvgColor" value="#a1ff75">
+                    </div>
+                </div>
+                <div id="svgPreviewBox" class="svg-preview-box">
+                    <!-- Converted SVG will be rendered here -->
+                    <p class="preview-placeholder">Preview will appear here after conversion.</p>
+                </div>
+            </section>
+        </main>
 
-        <div class="io-section output-section">
-            <h2>Converted SVG:</h2>
-            <textarea id="svgOutput" rows="10" readonly placeholder="Converted SVG will appear here..."></textarea>
-            <button id="copyButton" style="display:none;">Copy to Clipboard</button>
-            <a id="downloadLink" style="display:none;">Download Converted SVG</a>
-        </div>
+        <footer>
+            <p>Utility by <a href="[Your Erik Lens Website/Portfolio Link]" target="_blank" rel="noopener noreferrer">Erik Lens</a></p>
+        </footer>
     </div>
 
     <script src="script.js"></script>
