@@ -1,0 +1,82 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top */
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 700px;
+}
+
+h1 {
+    text-align: center;
+    color: #007bff; /* A nice blue */
+}
+
+.io-section {
+    margin-bottom: 20px;
+}
+
+.io-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="file"],
+textarea {
+    width: calc(100% - 22px); /* Account for padding and border */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: monospace; /* Good for code */
+}
+
+textarea {
+    resize: vertical;
+}
+
+button, a#downloadLink {
+    display: block;
+    width: auto; /* Fit content */
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+    text-decoration: none; /* For the <a> tag */
+}
+
+button:hover, a#downloadLink:hover {
+    background-color: #0056b3;
+}
+
+#copyButton {
+    background-color: #28a745; /* Green */
+    margin-right: 10px; /* Spacing if download is also visible */
+}
+#copyButton:hover {
+    background-color: #1e7e34;
+}
+
+.output-section button, .output-section a {
+    display: inline-block; /* Allow side-by-side */
+    margin-right: 10px;
+}
